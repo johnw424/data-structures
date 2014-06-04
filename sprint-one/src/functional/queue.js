@@ -28,7 +28,9 @@ var makeQueue = function(){
   };
 
   someInstance.size = function(){
-    // Return size of queue
+    // The top and bottom are always moving independently
+    // and you can't infer the top or bottom from the size
+    // and the bottom never decrements in our model
     return enqueueTally - dequeueTally;
   };
 
