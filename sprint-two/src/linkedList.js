@@ -37,7 +37,7 @@ var makeLinkedList = function(){
       // assign starting reference as head
       var reference = list.head;
       // while reference doesn't point to null
-      while(reference.next !== null) {
+      while(reference !== null) {
         console.log(list.head, reference.value);
         // if value (at current reference) === target return true
         if(reference.value === target) {
@@ -45,11 +45,6 @@ var makeLinkedList = function(){
         }
         // update reference to next node in linked list
         reference = reference.next;
-        if(reference.next === null) {
-          if(reference.value === target) {
-            return true;
-          }
-        }
       }
     }
     // otherwise return false
