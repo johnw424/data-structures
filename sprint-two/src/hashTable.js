@@ -14,60 +14,51 @@ HashTable.prototype.insert = function(k, v){
     tempArray.push([k, v]);
     // set storage at i to temp store item
     this._storage.set(i, tempArray);
+  } else {
+    // call set function to store i and value in storage
+    this._storage.set(i, [[k,v]]);
   }
-  // call set function to store i and value in storage
-  this._storage.set(i, [[k,v]]);
 };
 
 HashTable.prototype.retrieve = function(k){
   var i = getIndexBelowMaxForKey(k, this._limit);
-  // assign to temp the tuple (item) at index of hashed key
-  var tempTuple = this._storage.get(i);
-  // temp found variable to track if match was found
-  var found = false;
-  // make sure temp tuple is not null
-  if (tempTuple[0] !== null) {
-    // iterate over temp tuple
-    for (var j = 0; j < tempTuple.length; j++) {
-      // check for matching keys within temp tuple at index 0
-      if (k === tempTuple[j][0]) {
+  // assign to temp the Bucket (item) at index of hashed key
+  var tempBucket = this._storage.get(i);
+  // make sure temp bucket is not null
+  if (tempBucket) {
+    // iterate over temp bucket
+    for (var j = 0; j < tempBucket.length; j++) {
+      // check for matching keys within temp Bucket at index 0
         // assign to temp the return value at index 1 of that array
-        tempTuple = tempTuple[j][1];
-        found = true;
-      }
+      if (k === tempBucket[j][0]) { return tempBucket[j][1]; }
     }
-    // // // NOTE FOR WORK: rethink found boolean in retrieve
-    // // // NOTE FOR WORK: revisit if remove is then working
-    if(!found) {
-
-    }
+    return null;
   }
-  // return temp
-  return tempTuple;
+  return null;
 };
 
 HashTable.prototype.remove = function(k){
   // store index based on key
   var i = getIndexBelowMaxForKey(k, this._limit);
-  // assign to temp the tuple (item) at index of hashed key
-  var tempTuple = this._storage.get(i);
-  // make sure temp tuple is not null
-  if (tempTuple[0] !== null) {
-    // iterate over temp tuple
-    for (var j = 0; j < tempTuple.length; j++) {
-      // check for matching keys within temp tuple at index 0
-      if (k === tempTuple[j][0]) {
-        // assign temp tuple to array of pre & post index slices
-        tempTuple = tempTuple.slice(0,j)
-                    .concat(tempTuple.slice(j+1,tempTuple.length));
-        // check if temp tuple is empty now
-        if (tempTuple.length === 0) {
-          // set temp tuple to null
-          tempTuple = null;
+  // assign to temp the Bucket (item) at index of hashed key
+  var tempBucket = this._storage.get(i);
+  // make sure temp Bucket is not null
+  if (tempBucket) {
+    // iterate over temp Bucket
+    for (var j = 0; j < tempBucket.length; j++) {
+      // check for matching keys within temp Bucket at index 0
+      if (k === tempBucket[j][0]) {
+        // assign temp Bucket to array of pre & post index slices
+        var removed = tempBucket.splice(j,1);
+        // check if temp Bucket is empty now
+        if (tempBucket.length === 0) {
+          // set temp Bucket to null
+          tempBucket = null;
         }
-        // set storage at item to temp tuple
-        this._storage.set(i, tempTuple);
+        // set storage at item to temp Bucket
+        this._storage.set(i, tempBucket);
       }
+      return removed[0];
     }
   }
 };
@@ -76,3 +67,23 @@ HashTable.prototype.remove = function(k){
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
