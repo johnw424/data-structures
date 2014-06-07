@@ -38,7 +38,3 @@ treeMethods.contains = function(target){
 /*
  * Complexity: What is the time complexity of the above functions?
  */
-
-
-var first = makeTree('adam');
-first.addChild('methuselah');
